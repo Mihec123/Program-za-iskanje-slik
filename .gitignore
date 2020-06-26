@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!ImageSearch.jar
 *.war
 *.nar
 *.ear
