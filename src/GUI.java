@@ -62,18 +62,18 @@ public class GUI {
 		ReadWrite read_write = new ReadWrite();
 		frmImagesearch = new JFrame();
 		frmImagesearch.setTitle("ImageSearch");
-		frmImagesearch.setBounds(100, 100, 450, 300);
+		frmImagesearch.setBounds(100, 100, 431, 437);
 		frmImagesearch.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmImagesearch.getContentPane().setLayout(null);
 		
 		JCheckBox chckbxNewCheckBox = new JCheckBox("jpg");
 		chckbxNewCheckBox.setSelected(true);
-		chckbxNewCheckBox.setBounds(10, 99, 54, 23);
+		chckbxNewCheckBox.setBounds(10, 84, 54, 23);
 		frmImagesearch.getContentPane().add(chckbxNewCheckBox);
 		
 		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("png");
 		chckbxNewCheckBox_1.setSelected(true);
-		chckbxNewCheckBox_1.setBounds(10, 125, 54, 23);
+		chckbxNewCheckBox_1.setBounds(10, 110, 54, 23);
 		frmImagesearch.getContentPane().add(chckbxNewCheckBox_1);
 		
 		txtField_directory = new JTextField();
@@ -88,7 +88,7 @@ public class GUI {
 		textField_csv.setColumns(10);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(20, 189, 362, 61);
+		scrollPane.setBounds(20, 189, 380, 184);
 		frmImagesearch.getContentPane().add(scrollPane);
 		
 		list = new JList<String> ();
@@ -96,7 +96,7 @@ public class GUI {
 		
 		textField_update = new JTextField();
 		textField_update.setEditable(false);
-		textField_update.setBounds(338, 156, 86, 20);
+		textField_update.setBounds(310, 156, 86, 20);
 		frmImagesearch.getContentPane().add(textField_update);
 		textField_update.setColumns(10);
 		
@@ -195,7 +195,7 @@ public class GUI {
 				}
 			}
 		});
-		btnUpdate.setBounds(243, 155, 89, 23);
+		btnUpdate.setBounds(211, 155, 89, 23);
 		frmImagesearch.getContentPane().add(btnUpdate);
 	
 		
@@ -264,7 +264,7 @@ public class GUI {
 		txtjpgJpeg.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		txtjpgJpeg.setEditable(false);
 		txtjpgJpeg.setText("(jpg, jpeg)");
-		txtjpgJpeg.setBounds(70, 100, 86, 20);
+		txtjpgJpeg.setBounds(70, 85, 86, 20);
 		frmImagesearch.getContentPane().add(txtjpgJpeg);
 		txtjpgJpeg.setColumns(10);
 		
@@ -272,7 +272,7 @@ public class GUI {
 		txtPng.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		txtPng.setText("(png)");
 		txtPng.setEditable(false);
-		txtPng.setBounds(70, 126, 86, 20);
+		txtPng.setBounds(70, 111, 86, 20);
 		frmImagesearch.getContentPane().add(txtPng);
 		txtPng.setColumns(10);
 		
