@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,7 +16,19 @@ public class Search {
 	
 	
 	String POT = "";
+	private int uniqueFiles = 0;
 	
+	private Set<String> Duplicates = new HashSet<String>();
+	private Set<String> znaniNeDuplikati = new HashSet<String>();
+	
+	public int getUniqueFiles() {
+		return uniqueFiles;
+	}
+
+	public void setUniqueFiles(int uniqueFiles) {
+		this.uniqueFiles = uniqueFiles;
+	}
+
 	private List<String> extensions = new ArrayList<>();
 	
 	/**
@@ -50,6 +63,7 @@ public class Search {
 			try {
 				attr = Files.readAttributes(file, BasicFileAttributes.class);
 				if(znani.contains(seznam1[seznam1.length -1].split("\\.")[0] + "," +attr.lastModifiedTime().toString())) {
+					//ta file ze mamo
 					return false;
 					
 				}
@@ -57,11 +71,13 @@ public class Search {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			//ta file iscemo
+			uniqueFiles += 1;
 			return true;
 		}
-		
+		//ni med iskanimi fili
 		return false;
+		
 	}
 	
 	
@@ -85,6 +101,7 @@ public class Search {
 	 * @return
 	 */
 	public Set<String> isci(String pot, Set<String> znani) {
+		uniqueFiles = 0;
 		Set<String> paths = null;
 		try {
 			paths = Files.walk(Paths.get(pot))
@@ -108,6 +125,7 @@ public class Search {
 	 */
 	
 	public Set<String> preglej(String pot, Set<String> znani) {
+		uniqueFiles = 0;
 		Set<String> podatki = null;
 		try {
 			podatki = Files.walk(Paths.get(pot))
@@ -144,6 +162,70 @@ public class Search {
 		
 		return null;
 		
+		
+		
 	}
+	
+	
+	public Set<String> searchDuplicate(String pot) {
+		
+		Duplicates = new HashSet<String>();
+		znaniNeDuplikati = new HashSet<String>();
+		
+		uniqueFiles = 0;
+		System.out.println("duplikati");
+		try {
+			
+			@SuppressWarnings("unused")
+			Set<Path> podatki = Files.walk(Paths.get(pot))
+					.filter(el -> duplicateFilter(el))
+					.collect(Collectors.toSet());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("e");
+			e.printStackTrace();
+		}
+		return Duplicates;
+		
+	}
+	
+	
+	public Boolean duplicateFilter(Path original_pot) {
+		
+		String pot = original_pot.toString();
+		String[] seznam = pot.split("\\.");
+		if (extensions.contains(seznam[seznam.length -1])) {
+			String[] seznam1 = pot.split("\\\\");
+			Path file = Paths.get(pot);
+			BasicFileAttributes attr;
+			try {
+				attr = Files.readAttributes(file, BasicFileAttributes.class);
+				if(znaniNeDuplikati.contains(seznam1[seznam1.length -1].split("\\.")[0] + "," +attr.lastModifiedTime().toString())) {
+					//ta file ze mamo
+					uniqueFiles += 1;
+					Duplicates.add(pot);
+					return false;
+					
+				
+					
+				}
+				
+				//ta file prvic vidimo
+
+				znaniNeDuplikati.add(seznam1[seznam1.length -1].split("\\.")[0] + "," +attr.lastModifiedTime().toString());
+				return true;
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		//ni med iskanimi fili
+		return false;
+		
+	}
+	
+	
+
 	
 }

@@ -57,7 +57,7 @@ public class ReadWrite {
 		File f = new File(path);
 		FileWriter csvWriter;
 		if(f.exists() && !f.isDirectory()) { 
-			System.out.println("pisemo v znan");
+//			System.out.println("pisemo v znan");
 			csvWriter = new FileWriter(path,true);
 			
 			for (String el:data) {
@@ -72,7 +72,7 @@ public class ReadWrite {
 
 		}
 		else {
-			System.out.println("pisemo v neznan");
+//			System.out.println("pisemo v neznan");
 			csvWriter = new FileWriter(path);
 			csvWriter.write("Name,Date");
 			csvWriter.write("\n");
