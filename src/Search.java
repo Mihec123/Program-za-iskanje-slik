@@ -3,6 +3,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,6 +22,8 @@ public class Search {
 	
 	private Set<String> Duplicates = new HashSet<String>();
 	private Set<String> znaniNeDuplikati = new HashSet<String>();
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
 	public int getUniqueFiles() {
 		return uniqueFiles;
@@ -62,7 +66,9 @@ public class Search {
 			BasicFileAttributes attr;
 			try {
 				attr = Files.readAttributes(file, BasicFileAttributes.class);
-				if(znani.contains(seznam1[seznam1.length -1].split("\\.")[0] + "," +attr.lastModifiedTime().toString())) {
+				FileTime date = attr.lastModifiedTime();
+				String imeF = sdf.format(date.toMillis());
+				if(znani.contains(seznam1[seznam1.length -1].split("\\.")[0] + "," +imeF)) {
 					//ta file ze mamo
 					return false;
 					
@@ -86,11 +92,16 @@ public class Search {
 	 * @param pot
 	 * @return
 	 */
-	public String potElementa(String pot) {
+	public String potElementa(String pot, Boolean folder) {
 		
+		if(folder) {
 		String[] tmp = pot.split("\\\\");
 		tmp = Arrays.copyOf(tmp, tmp.length-1);
 		return String.join("//", tmp);
+		}
+		else {
+			return pot;
+		}
 		
 	}
 	
@@ -100,13 +111,13 @@ public class Search {
 	 * @param znani Mnozica ze znanih slik
 	 * @return
 	 */
-	public Set<String> isci(String pot, Set<String> znani) {
+	public Set<String> isci(String pot, Set<String> znani, Boolean folder) {
 		uniqueFiles = 0;
 		Set<String> paths = null;
 		try {
 			paths = Files.walk(Paths.get(pot))
 					.filter(el -> vsebuje(el,znani))
-					.map(el -> potElementa(el.toString()))
+					.map(el -> potElementa(el.toString(),folder))
 					.collect(Collectors.toSet());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -154,7 +165,9 @@ public class Search {
 		BasicFileAttributes attr;
 		try {
 			attr = Files.readAttributes(file, BasicFileAttributes.class);
-			return tmp1[0]+","+attr.lastModifiedTime().toString();
+			FileTime date = attr.lastModifiedTime();
+			String imeF = sdf.format(date.toMillis());
+			return tmp1[0]+","+imeF;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -200,7 +213,9 @@ public class Search {
 			BasicFileAttributes attr;
 			try {
 				attr = Files.readAttributes(file, BasicFileAttributes.class);
-				if(znaniNeDuplikati.contains(seznam1[seznam1.length -1].split("\\.")[0] + "," +attr.lastModifiedTime().toString())) {
+				FileTime date = attr.lastModifiedTime();
+				String imeF = sdf.format(date.toMillis());
+				if(znaniNeDuplikati.contains(seznam1[seznam1.length -1].split("\\.")[0] + "," +imeF)) {
 					//ta file ze mamo
 					uniqueFiles += 1;
 					Duplicates.add(pot);
@@ -211,8 +226,10 @@ public class Search {
 				}
 				
 				//ta file prvic vidimo
+				
+				
 
-				znaniNeDuplikati.add(seznam1[seznam1.length -1].split("\\.")[0] + "," +attr.lastModifiedTime().toString());
+				znaniNeDuplikati.add(seznam1[seznam1.length -1].split("\\.")[0] + "," +imeF);
 				return true;
 				
 			} catch (IOException e) {

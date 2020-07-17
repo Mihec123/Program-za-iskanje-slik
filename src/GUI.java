@@ -78,6 +78,12 @@ public class GUI {
 		chckbxNewCheckBox_1.setBounds(10, 110, 54, 23);
 		frmImagesearch.getContentPane().add(chckbxNewCheckBox_1);
 		
+		JCheckBox chckbxNewCheckBox_2 = new JCheckBox("folders");
+		chckbxNewCheckBox_2.setToolTipText("prints folder names instead of file names");
+		chckbxNewCheckBox_2.setSelected(true);
+		chckbxNewCheckBox_2.setBounds(211, 84, 97, 23);
+		frmImagesearch.getContentPane().add(chckbxNewCheckBox_2);
+		
 		txtField_directory = new JTextField();
 		txtField_directory.setToolTipText("Search directory path");
 		txtField_directory.setBounds(10, 47, 122, 20);
@@ -115,6 +121,7 @@ public class GUI {
 				
 				
 				iskanje.resetExtensions();
+				Boolean folder = false;
 				
 				if(chckbxNewCheckBox.isSelected()) {
 					iskanje.appendExtensions("jpg");
@@ -127,6 +134,12 @@ public class GUI {
 				if(chckbxNewCheckBox_1.isSelected()) {
 					iskanje.appendExtensions("png");
 					iskanje.appendExtensions("PNG");
+					
+				}
+				
+				if(chckbxNewCheckBox_2.isSelected()) {
+					folder = true;
+					
 					
 				}
 				
@@ -144,7 +157,7 @@ public class GUI {
 					seznam_nasih = new HashSet<String> ();
 				}
 				
-				Set<String> a = iskanje.isci(pot,seznam_nasih);
+				Set<String> a = iskanje.isci(pot,seznam_nasih,folder);
 				DefaultListModel<String>  DLM = new DefaultListModel<String> ();
 				for(String t: a) {
 					DLM.addElement(t);
@@ -349,7 +362,7 @@ public class GUI {
 		textField_Duplicate.setBounds(109, 203, 127, 20);
 		frmImagesearch.getContentPane().add(textField_Duplicate);
 		textField_Duplicate.setColumns(10);
+		
 
 	}
-	
 }
